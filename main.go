@@ -21,9 +21,23 @@ func main() {
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := segments[2]
-	a := sign(body, "a")
-	fmt.Println(signature)
-	fmt.Println(a)
+	/*a := sign(body, "a")
+	fmt.Println([]byte(signature))
+	fmt.Println([]byte(a))*/
+	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	i := 0
+	for {
+		currSig := string(alphabet[i])
+		currHash := sign(body, currSig)
+		currHash = strings.ReplaceAll(currHash, "=", "")
+		currHash = strings.ReplaceAll(currHash, "+", "-")
+		if currHash == signature {
+			fmt.Printf("Signature found: %s", currSig)
+			break
+		}
+
+		i++
+	}
 }
 
 func getAlghoritm(token string) string {
