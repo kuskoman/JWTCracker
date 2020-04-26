@@ -1,8 +1,11 @@
 package main
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -13,10 +16,17 @@ func main() {
 		log.Fatal("You must provide a token to be cracked")
 	}
 	token := os.Args[1]
-	println(token)
+	//alg := getAlghoritm(token)
+
+	segments := strings.Split(token, ".")
+	body := strings.Join(segments[0:2], ".")
+	signature := segments[2]
+	a := sign(body, "a")
+	fmt.Println(signature)
+	fmt.Println(a)
 }
 
-func parseToken(token string) string {
+func getAlghoritm(token string) string {
 	h := &Header{}
 	segments := strings.Split(token, ".")
 
@@ -35,6 +45,13 @@ func parseToken(token string) string {
 	}
 
 	return h.Algorithm
+}
+
+func sign(body, secret string) string {
+	mac := hmac.New(sha256.New, []byte(secret))
+	mac.Write([]byte(body))
+	hash := mac.Sum(nil)
+	return base64.StdEncoding.EncodeToString(hash)
 }
 
 type Header struct {
