@@ -21,21 +21,17 @@ func main() {
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := segments[2]
-	/*a := sign(body, "a")
-	fmt.Println([]byte(signature))
-	fmt.Println([]byte(a))*/
-	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	i := 0
 	for {
-		currSig := string(alphabet[i])
+		currSig := getStringFor(i)
+		log.Printf("Current signature: %s\n", currSig)
 		currHash := sign(body, currSig)
 		currHash = strings.ReplaceAll(currHash, "=", "")
 		currHash = strings.ReplaceAll(currHash, "+", "-")
 		if currHash == signature {
-			fmt.Printf("Signature found: %s", currSig)
+			fmt.Printf("Signature found on %d iteration: %s", i, currSig)
 			break
 		}
-
 		i++
 	}
 }
@@ -66,6 +62,20 @@ func sign(body, secret string) string {
 	mac.Write([]byte(body))
 	hash := mac.Sum(nil)
 	return base64.StdEncoding.EncodeToString(hash)
+}
+
+func getStringFor(i int) string {
+	var str string
+	charTab := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	chTabLen := len(charTab)
+	for {
+		mod := i % chTabLen
+		str = string(charTab[mod]) + str
+		i /= chTabLen
+		if i == 0 {
+			return str
+		}
+	}
 }
 
 type Header struct {
