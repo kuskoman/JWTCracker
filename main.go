@@ -34,9 +34,8 @@ func main() {
 		currSig := w.Next()
 		log.Printf("Current signature: %s\n", currSig)
 		currHash := signHS256(body, currSig)
-		currHash = strings.ReplaceAll(currHash, "=", "")
-		currHash = strings.ReplaceAll(currHash, "+", "-")
-		currHash = strings.ReplaceAll(currHash, "/", "_")
+		currHash = escapeNonUrlChars(currHash)
+
 		if currHash == signature {
 			fmt.Printf("Signature found on %d iteration: %s", i, currSig)
 			break
@@ -66,11 +65,18 @@ func getAlghoritm(token string) string {
 	return h.Algorithm
 }
 
+func escapeNonUrlChars(s string) string {
+	s = strings.ReplaceAll(s, "=", "")
+	s = strings.ReplaceAll(s, "+", "-")
+	s = strings.ReplaceAll(s, "/", "_")
+	return s
+}
+
 func signHS256(body, secret string) string {
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write([]byte(body))
 	hash := mac.Sum(nil)
-	return base64.StdEncoding.EncodeToString(hash)
+	return base64.URLEncoding.EncodeToString(hash)
 }
 
 type Header struct {
