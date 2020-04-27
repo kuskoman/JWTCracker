@@ -16,8 +16,10 @@ func main() {
 		log.Fatal("You must provide a token to be cracked")
 	}
 	token := os.Args[1]
-	//alg := getAlghoritm(token)
-
+	alg := getAlghoritm(token)
+	if alg != "HS256" {
+		log.Fatal("This alghoritm is not supported yet")
+	}
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := segments[2]
@@ -25,7 +27,7 @@ func main() {
 	for {
 		currSig := getStringFor(i)
 		log.Printf("Current signature: %s\n", currSig)
-		currHash := sign(body, currSig)
+		currHash := signHS256(body, currSig)
 		currHash = strings.ReplaceAll(currHash, "=", "")
 		currHash = strings.ReplaceAll(currHash, "+", "-")
 		if currHash == signature {
@@ -57,7 +59,7 @@ func getAlghoritm(token string) string {
 	return h.Algorithm
 }
 
-func sign(body, secret string) string {
+func signHS256(body, secret string) string {
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write([]byte(body))
 	hash := mac.Sum(nil)
@@ -65,16 +67,12 @@ func sign(body, secret string) string {
 }
 
 func getStringFor(i int) string {
-	var str string
-	charTab := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-	chTabLen := len(charTab)
-	for {
-		mod := i % chTabLen
-		str = string(charTab[mod]) + str
-		i /= chTabLen
-		if i == 0 {
-			return str
-		}
+	charTab := "aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	base := len(charTab)
+	if i < base {
+		return string(charTab[i])
+	} else {
+		return getStringFor(i/base) + string(charTab[i%base])
 	}
 }
 
