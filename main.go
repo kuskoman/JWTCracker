@@ -9,6 +9,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/kuskoman/JWTCracker/generators"
 )
 
 func main() {
@@ -23,7 +25,7 @@ func main() {
 	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	var chs []int
 	chs = append(chs, 0)
-	w := WordGenerator{alphabet: alphabet, currChs: chs}
+	w := generators.WordGenerator{Alphabet: alphabet, CurrChs: chs}
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := segments[2]
