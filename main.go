@@ -67,7 +67,7 @@ func signHS256(body, secret string) string {
 }
 
 func getStringFor(i int) string {
-	charTab := "aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	charTab := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	base := len(charTab)
 	if i < base {
 		return string(charTab[i])
