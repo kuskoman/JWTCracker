@@ -30,7 +30,7 @@ func main() {
 	w := generators.WordGenerator{Alphabet: alphabet, CurrChs: chs}
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
-	signature := segments[2]
+	signature := utils.EscapeNonUrlChars(segments[2])
 	i := 0
 	for {
 		currSig := w.Next()
