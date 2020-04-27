@@ -20,16 +20,21 @@ func main() {
 	if alg != "HS256" {
 		log.Fatal("This alghoritm is not supported yet")
 	}
+	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	var chs []int
+	chs = append(chs, 0)
+	w := WordGenerator{alphabet: alphabet, currChs: chs}
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := segments[2]
 	i := 0
 	for {
-		currSig := getStringFor(i)
+		currSig := w.Next()
 		log.Printf("Current signature: %s\n", currSig)
 		currHash := signHS256(body, currSig)
 		currHash = strings.ReplaceAll(currHash, "=", "")
 		currHash = strings.ReplaceAll(currHash, "+", "-")
+		currHash = strings.ReplaceAll(currHash, "/", "_")
 		if currHash == signature {
 			fmt.Printf("Signature found on %d iteration: %s", i, currSig)
 			break
@@ -64,16 +69,6 @@ func signHS256(body, secret string) string {
 	mac.Write([]byte(body))
 	hash := mac.Sum(nil)
 	return base64.StdEncoding.EncodeToString(hash)
-}
-
-func getStringFor(i int) string {
-	charTab := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-	base := len(charTab)
-	if i < base {
-		return string(charTab[i])
-	} else {
-		return getStringFor(i/base) + string(charTab[i%base])
-	}
 }
 
 type Header struct {
