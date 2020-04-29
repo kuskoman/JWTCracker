@@ -16,6 +16,8 @@ func GetHasher(alg string) Hasher {
 	switch alg {
 	case "HS256":
 		h = &alghoritms.HS256Hasher{}
+	case "HS384":
+		h = &alghoritms.HS384Hasher{}
 	default:
 		log.Fatal("This alghoritm is not supported yet")
 	}
