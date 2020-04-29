@@ -8,6 +8,8 @@ or [c-jwt-cracker](https://github.com/brendan-rius/c-jwt-cracker).
 
 ## Usage
 
+The application takes JWT as the only argument- it should automatically detect used alghoritm and start looking for the valid signature.
+
 ### Without building
 
 ```shell
