@@ -1,9 +1,6 @@
 package main
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/base64"
 	"fmt"
 	"log"
 	"os"
@@ -21,9 +18,7 @@ func main() {
 
 	token := os.Args[1]
 	alg := alghoritms.RecogniseJWTAlghoritm(token)
-	if alg != "HS256" {
-		log.Fatal("This alghoritm is not supported yet")
-	}
+	h := alghoritms.GetHasher(alg)
 	w := generators.NewAlphabeticNumerator()
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
@@ -32,7 +27,7 @@ func main() {
 	for {
 		currSig := w.Next()
 		log.Printf("Current signature: %s\n", currSig)
-		currHash := signHS256(body, currSig)
+		currHash := h.Sign(body, currSig)
 		currHash = utils.EscapeNonUrlChars(currHash)
 
 		if currHash == signature {
@@ -41,11 +36,4 @@ func main() {
 		}
 		i++
 	}
-}
-
-func signHS256(body, secret string) string {
-	mac := hmac.New(sha256.New, []byte(secret))
-	mac.Write([]byte(body))
-	hash := mac.Sum(nil)
-	return base64.URLEncoding.EncodeToString(hash)
 }
