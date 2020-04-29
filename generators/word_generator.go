@@ -31,3 +31,11 @@ func (w *WordGenerator) Next() string {
 
 	return str
 }
+
+func NewAlphabeticNumerator() *WordGenerator {
+	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	var chs []int
+	chs = append(chs, -1)
+	w := WordGenerator{Alphabet: alphabet, CurrChs: chs}
+	return &w
+}

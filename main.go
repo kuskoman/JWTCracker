@@ -24,10 +24,7 @@ func main() {
 	if alg != "HS256" {
 		log.Fatal("This alghoritm is not supported yet")
 	}
-	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-	var chs []int
-	chs = append(chs, -1)
-	w := generators.WordGenerator{Alphabet: alphabet, CurrChs: chs}
+	w := generators.NewAlphabeticNumerator()
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := utils.EscapeNonUrlChars(segments[2])
