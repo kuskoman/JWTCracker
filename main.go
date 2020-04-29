@@ -8,6 +8,7 @@ import (
 
 	"github.com/kuskoman/JWTCracker/alghoritms"
 	"github.com/kuskoman/JWTCracker/generators"
+	"github.com/kuskoman/JWTCracker/hashing"
 	"github.com/kuskoman/JWTCracker/utils"
 )
 
@@ -18,7 +19,7 @@ func main() {
 
 	token := os.Args[1]
 	alg := alghoritms.RecogniseJWTAlghoritm(token)
-	h := alghoritms.GetHasher(alg)
+	h := hashing.GetHasher(alg)
 	w := generators.NewAlphabeticNumerator()
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
