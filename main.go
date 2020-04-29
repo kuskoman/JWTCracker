@@ -26,12 +26,12 @@ func main() {
 	}
 	alphabet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	var chs []int
-	chs = append(chs, 0)
+	chs = append(chs, -1)
 	w := generators.WordGenerator{Alphabet: alphabet, CurrChs: chs}
 	segments := strings.Split(token, ".")
 	body := strings.Join(segments[0:2], ".")
 	signature := utils.EscapeNonUrlChars(segments[2])
-	i := 0
+	i := 1
 	for {
 		currSig := w.Next()
 		log.Printf("Current signature: %s\n", currSig)
