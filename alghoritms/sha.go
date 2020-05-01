@@ -2,14 +2,16 @@ package alghoritms
 
 import (
 	"crypto/hmac"
-	"crypto/sha512"
 	"encoding/base64"
+	"hash"
 )
 
-type HS384Hasher struct{}
+type SHAHasher struct {
+	Alg func() hash.Hash
+}
 
-func (h *HS384Hasher) Sign(body, secret string) string {
-	mac := hmac.New(sha512.New384, []byte(secret))
+func (h *SHAHasher) Sign(body, secret string) string {
+	mac := hmac.New(h.Alg, []byte(secret))
 	mac.Write([]byte(body))
 	hash := mac.Sum(nil)
 	return base64.URLEncoding.EncodeToString(hash)

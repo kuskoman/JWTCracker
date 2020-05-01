@@ -1,6 +1,8 @@
 package hashing
 
 import (
+	"crypto/sha256"
+	"crypto/sha512"
 	"log"
 
 	"github.com/kuskoman/JWTCracker/alghoritms"
@@ -15,9 +17,9 @@ func GetHasher(alg string) Hasher {
 
 	switch alg {
 	case "HS256":
-		h = &alghoritms.HS256Hasher{}
+		h = &alghoritms.SHAHasher{Alg: sha256.New}
 	case "HS384":
-		h = &alghoritms.HS384Hasher{}
+		h = &alghoritms.SHAHasher{Alg: sha512.New384}
 	default:
 		log.Fatal("This alghoritm is not supported yet")
 	}
