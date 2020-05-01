@@ -20,6 +20,8 @@ func GetHasher(alg string) Hasher {
 		h = &alghoritms.SHAHasher{Alg: sha256.New}
 	case "HS384":
 		h = &alghoritms.SHAHasher{Alg: sha512.New384}
+	case "HS512":
+		h = &alghoritms.SHAHasher{Alg: sha512.New}
 	default:
 		log.Fatal("This alghoritm is not supported yet")
 	}
