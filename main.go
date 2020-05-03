@@ -30,7 +30,6 @@ func main() {
 		currSig := w.Next()
 		log.Printf("Current signature: %s\n", currSig)
 		currHash := h.Sign(body, currSig)
-		currHash = utils.EscapeNonUrlChars(currHash)
 
 		if currHash == signature {
 			fmt.Printf("Signature found on %d iteration: %s", i, currSig)

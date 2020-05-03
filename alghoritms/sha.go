@@ -14,5 +14,5 @@ func (h *SHAHasher) Sign(body, secret string) string {
 	mac := hmac.New(h.Alg, []byte(secret))
 	mac.Write([]byte(body))
 	hash := mac.Sum(nil)
-	return base64.URLEncoding.EncodeToString(hash)
+	return base64.RawURLEncoding.EncodeToString(hash)
 }

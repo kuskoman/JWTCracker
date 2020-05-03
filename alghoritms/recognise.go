@@ -15,7 +15,7 @@ func RecogniseJWTAlghoritm(token string) string {
 		log.Fatal("Token has less or more than 3 segments. Make sure you are providing a signed JWS")
 	}
 
-	decodedHeaderJson, err := base64.StdEncoding.DecodeString(segments[0])
+	decodedHeaderJson, err := base64.RawStdEncoding.DecodeString(segments[0])
 	if err != nil {
 		log.Fatal("Error when decoding token header")
 	}
