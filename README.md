@@ -28,3 +28,6 @@ go build .
 - HS256
 - HS384
 - HS512
+
+## Contributors:
+Thanks to [u/gnisten_](https://www.reddit.com/user/gnisten_/) for [fixing header recognition](https://www.reddit.com/r/golang/comments/gcrsmv/i_wrote_an_app_for_cracking_jwt_as_my_first/fpe45bo/).
